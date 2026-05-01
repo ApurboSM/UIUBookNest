@@ -60,3 +60,39 @@ export type Course = {
   credits: number;
   trimester?: string;
 };
+
+export type CartItem = {
+  productId: string;
+  quantity: number;
+};
+
+export type FulfilmentMethod = "pickup" | "delivery";
+
+export type PaymentMethod = "bkash" | "nagad" | "sslcommerz" | "cod";
+
+export type OrderItem = {
+  productId: string;
+  slug: string;
+  title: string;
+  author?: string;
+  image: string;
+  priceBDT: number;
+  quantity: number;
+};
+
+export type Order = {
+  id: string;
+  studentId: string;
+  customerName: string;
+  fulfilment: FulfilmentMethod;
+  payment: PaymentMethod;
+  items: OrderItem[];
+  subtotal: number;
+  shipping: number;
+  total: number;
+  createdAt: string;
+  pickupTime?: string;
+  deliveryAddress?: string;
+  phone?: string;
+};
+
