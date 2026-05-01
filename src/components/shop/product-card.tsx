@@ -37,31 +37,35 @@ export function ProductCard({ product, className }: ProductCardProps) {
               </Badge>
             ))}
           </div>
-          {!product.inStock && (
-            <Badge variant="danger" className="backdrop-blur">
-              Out of Stock
-            </Badge>
-          )}
+          <StockBadge
+            inStock={product.inStock}
+            className="backdrop-blur bg-black/40"
+          />
         </div>
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[var(--surface)] via-[var(--surface)]/40 to-transparent" />
       </div>
 
-      <div className="flex flex-1 flex-col gap-2 p-4">
-        <div className="flex items-start justify-between gap-2">
-          <h3 className="line-clamp-2 text-[15px] font-medium leading-snug text-foreground transition-colors group-hover:text-[var(--primary-soft)]">
-            {product.title}
-          </h3>
-        </div>
+      <div className="flex flex-1 flex-col gap-1 p-4">
+        <h3 className="line-clamp-2 text-[15px] font-medium leading-snug text-foreground transition-colors group-hover:text-[var(--primary-soft)]">
+          {product.title}
+        </h3>
         {product.author && (
           <p className="line-clamp-1 text-xs text-muted">{product.author}</p>
         )}
-        <div className="mt-auto flex items-end justify-between gap-2 pt-3">
+        <div className="mt-auto flex flex-col gap-1.5 pt-3">
           <PriceTag
             price={product.priceBDT}
             originalPrice={product.originalPriceBDT}
-            size="sm"
+            size="md"
           />
-          <StockBadge inStock={product.inStock} count={product.stockCount} />
+          {product.inStock &&
+            typeof product.stockCount === "number" &&
+            product.stockCount > 0 &&
+            product.stockCount <= 10 && (
+              <span className="text-[11px] text-[var(--primary-soft)]">
+                Only {product.stockCount} left in stock
+              </span>
+            )}
         </div>
       </div>
     </Link>
