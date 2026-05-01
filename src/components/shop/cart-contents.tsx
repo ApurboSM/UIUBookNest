@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useHydrated } from "@/lib/use-hydrated";
 import { formatBDT } from "@/lib/format";
-import { productBySlug, products, getFeaturedProducts } from "@/data/products";
+import { products, getFeaturedProducts } from "@/data/products";
 import { useCartStore } from "@/store/cart";
 
 const productById = Object.fromEntries(products.map((p) => [p.id, p]));
