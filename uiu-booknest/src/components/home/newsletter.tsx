@@ -35,7 +35,7 @@ export function Newsletter() {
                 is back in stock.
               </h2>
               <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted md:text-base">
-                Drop your email — we'll send a single, polite notification when
+                Drop your email &mdash; we&rsquo;ll send a single, polite notification when
                 a textbook on your watchlist is restocked. No spam, no daily
                 blasts. Cancel any time.
               </p>

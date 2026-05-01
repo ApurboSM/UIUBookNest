@@ -69,12 +69,12 @@ export default function AboutPage() {
         <div className="grid gap-10 md:grid-cols-[1fr_1fr]">
           <div>
             <h2 className="font-serif text-2xl tracking-tight md:text-3xl">
-              The problem we're solving
+              The problem we&rsquo;re solving
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-muted">
               Every UIU trimester, students lose hours and money chasing
               textbooks across scattered Facebook groups, photocopy shops, and
-              questionable PDFs. There's no single, trusted, in-stock view of
+              questionable PDFs. There&rsquo;s no single, trusted, in-stock view of
               what your course actually needs — and no campus-aware delivery to
               boot.
             </p>
