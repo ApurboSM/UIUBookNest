@@ -18,7 +18,7 @@ export default function OrderConfirmationPage() {
       title={
         <>
           Order received —{" "}
-          <span className="text-gradient-brand">we're on it</span>
+          <span className="text-gradient-brand">we&rsquo;re on it</span>
         </>
       }
       description="A friendly confirmation page that closes the purchase journey. Once checkout ships, this page will display your real order number, items, and pickup/delivery instructions."
@@ -90,7 +90,7 @@ export default function OrderConfirmationPage() {
         <aside className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-8">
           <FileText className="size-5 text-[var(--primary)]" />
           <h3 className="mt-4 font-serif text-xl text-foreground">
-            What you'll see here
+            What you&rsquo;ll see here
           </h3>
           <ul className="mt-4 space-y-3 text-sm text-muted">
             <li>• Real order number generated from cart submission</li>
