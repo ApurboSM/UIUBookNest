@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowUpRight, Search, SlidersHorizontal } from "lucide-react";
 
 import { ProductCard } from "@/components/shop/product-card";
-import { PageShell, ComingSoonPanel } from "@/components/shared/page-shell";
+import { PageShell } from "@/components/shared/page-shell";
+import { Badge } from "@/components/ui/badge";
 import { categories } from "@/data/categories";
-import { getFeaturedProducts } from "@/data/products";
+import { products } from "@/data/products";
 
 export const metadata: Metadata = {
   title: "Shop — Textbooks, Stationery & UIU Merchandise",
@@ -12,11 +15,19 @@ export const metadata: Metadata = {
 };
 
 export default function ShopPage() {
-  const featured = getFeaturedProducts(4);
+  const categoryCounts = categories.map((c) => ({
+    ...c,
+    count: products.filter((p) => p.category === c.slug).length,
+  }));
+
+  const groupedByCategory = categories.map((c) => ({
+    category: c,
+    items: products.filter((p) => p.category === c.slug),
+  }));
 
   return (
     <PageShell
-      eyebrow="Shop · 23 SKUs"
+      eyebrow={`Shop · ${products.length} SKUs`}
       title={
         <>
           The full UIU{" "}
@@ -25,46 +36,57 @@ export default function ShopPage() {
       }
       description="A growing list of textbooks, stationery, exam supplies, and UIU merchandise — all priced in BDT, all eligible for campus pickup or Pathao / RedX delivery."
     >
-      <div className="mb-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {categories.map((c) => (
-          <div
+      <div className="mb-10 flex flex-wrap items-center gap-3">
+        {categoryCounts.map((c) => (
+          <Link
             key={c.slug}
-            className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4"
+            href={`#${c.slug}`}
+            className="group inline-flex items-center gap-2 rounded-full border border-[var(--border-strong)] bg-[var(--surface)] px-4 py-2 text-sm transition-colors hover:border-[var(--primary)]/50 hover:bg-[var(--surface-2)]"
           >
-            <p className="text-xs uppercase tracking-wider text-[var(--primary-soft)]">
-              {c.name}
-            </p>
-            <p className="mt-1 text-sm text-muted">{c.tagline}</p>
-          </div>
+            <span className="text-foreground">{c.name}</span>
+            <span className="rounded-full bg-[var(--surface-2)] px-2 py-0.5 text-[10px] font-semibold text-muted group-hover:text-[var(--primary-soft)]">
+              {c.count}
+            </span>
+          </Link>
         ))}
+        <span className="ml-auto inline-flex items-center gap-2 text-xs text-muted">
+          <SlidersHorizontal className="size-3.5" />
+          Sort by relevance
+          <Search className="ml-2 size-3.5" />
+          Search
+        </span>
       </div>
 
-      <ComingSoonPanel
-        iterationLabel="Phase 2 · Full Catalogue"
-        primaryAction={{ href: "/", label: "Back to Home" }}
-        secondaryAction={{ href: "/courses", label: "Browse Courses" }}
-        features={[
-          { label: "Category filter — Textbooks · Stationery · Exam Supplies · UIU Merchandise", status: "next" },
-          { label: "Header search wired across title, author, ISBN, and course code", status: "next" },
-          { label: "Sort by price, popularity, and newest restock", status: "next" },
-          { label: "Filter by school: Science & Engineering, Business & Economics, Humanities & Social, Life Sciences", status: "planned" },
-          { label: "Pagination and stock-aware empty states", status: "planned" },
-        ]}
-      />
-
-      <div className="mt-16">
-        <h2 className="font-serif text-2xl tracking-tight md:text-3xl">
-          Available now — preview
-        </h2>
-        <p className="mt-2 max-w-2xl text-sm text-muted">
-          A small preview of textbooks already in the catalogue. Click any card
-          to see the planned product detail layout.
-        </p>
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {featured.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
-        </div>
+      <div className="space-y-16">
+        {groupedByCategory.map(({ category, items }) => (
+          <section key={category.slug} id={category.slug} className="scroll-mt-24">
+            <div className="mb-6 flex flex-wrap items-end justify-between gap-3 border-b border-[var(--border)] pb-4">
+              <div>
+                <Badge variant="primary" className="mb-2">
+                  {category.tagline}
+                </Badge>
+                <h2 className="font-serif text-2xl tracking-tight text-foreground md:text-3xl">
+                  {category.name}
+                </h2>
+                <p className="mt-1 max-w-2xl text-sm text-muted">
+                  {category.description}
+                </p>
+              </div>
+              <Link
+                href={`/shop?category=${category.slug}`}
+                className="inline-flex items-center gap-1 text-sm font-medium text-[var(--primary-soft)] transition-colors hover:text-[var(--primary)]"
+              >
+                View {items.length} {items.length === 1 ? "item" : "items"}
+                <ArrowUpRight className="size-4" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
+              {items.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
     </PageShell>
   );

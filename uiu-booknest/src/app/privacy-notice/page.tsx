@@ -159,9 +159,9 @@ export default function PrivacyNoticePage() {
           <p className="mt-3 text-muted">
             UIUBookNest uses a minimal set of strictly necessary cookies to keep
             your cart contents between page navigations. We do not run
-            third-party advertising trackers. If aggregated, anonymised
-            analytics are added in a future iteration, this notice will be
-            updated and clearly communicated.
+            third-party advertising trackers. If we ever add aggregated,
+            anonymised analytics, this notice will be updated and clearly
+            communicated to you.
           </p>
         </section>
 

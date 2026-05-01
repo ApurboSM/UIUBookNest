@@ -90,8 +90,8 @@ export default function ContactPage() {
             Send us a message
           </h2>
           <p className="mt-2 text-sm text-muted">
-            Form submission isn&rsquo;t wired in this iteration &mdash; but the layout
-            below is the exact one that goes live in Phase 4.
+            Drop us a quick note and the UIUBookNest team will reply within
+            one business day. We&rsquo;re fastest on email.
           </p>
           <ContactForm />
         </div>

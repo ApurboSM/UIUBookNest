@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, BookOpen, Building2, Truck } from "lucide-react";
 
-import { ComingSoonPanel } from "@/components/shared/page-shell";
+import { ProductCard } from "@/components/shop/product-card";
 import { PriceTag } from "@/components/shared/price-tag";
 import { StockBadge } from "@/components/shared/stock-badge";
 import { Badge } from "@/components/ui/badge";
@@ -40,6 +40,9 @@ export default async function ProductPage({
   if (!product) notFound();
 
   const category = categoryBySlug[product.category];
+  const related = products
+    .filter((p) => p.category === product.category && p.id !== product.id)
+    .slice(0, 4);
 
   return (
     <div className="relative">
@@ -160,18 +163,31 @@ export default async function ProductPage({
           </div>
         </div>
 
-        <div className="mt-20">
-          <ComingSoonPanel
-            iterationLabel="Phase 2 · Detail page polish"
-            features={[
-              { label: "Image gallery with zoom and 360° spin for hardcovers", status: "next" },
-              { label: "Customer reviews from verified UIU students", status: "planned" },
-              { label: "Course-pairing widget — bundle this textbook with related items", status: "planned" },
-              { label: "Live stock counter and pickup ETA at UIU Campus Store", status: "planned" },
-            ]}
-            primaryAction={{ href: "/shop", label: "Back to Shop" }}
-          />
-        </div>
+        {related.length > 0 && (
+          <section className="mt-24">
+            <div className="mb-6 flex items-end justify-between gap-4 border-b border-[var(--border)] pb-4">
+              <div>
+                <p className="text-xs uppercase tracking-wider text-[var(--primary-soft)]">
+                  More from this category
+                </p>
+                <h2 className="mt-1 font-serif text-2xl tracking-tight md:text-3xl">
+                  You may also like
+                </h2>
+              </div>
+              <Link
+                href={`/shop?category=${product.category}`}
+                className="inline-flex items-center gap-1 text-sm font-medium text-[var(--primary-soft)] transition-colors hover:text-[var(--primary)]"
+              >
+                View all {category?.name.toLowerCase()}
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
+              {related.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );
