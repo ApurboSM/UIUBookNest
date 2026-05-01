@@ -15,6 +15,12 @@ import {
 } from "lucide-react";
 
 import { ProductCard } from "@/components/shop/product-card";
+import {
+  BkashMark,
+  CodMark,
+  NagadMark,
+  SslCommerzMark,
+} from "@/components/icons/payment-marks";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useHydrated } from "@/lib/use-hydrated";
@@ -263,15 +269,15 @@ export function CartContents() {
             </Link>
           </Button>
 
-          <div className="mt-5 grid grid-cols-3 gap-2 text-center">
-            <div className="rounded-md border border-[var(--border-strong)] bg-[var(--surface-2)] py-2 text-[10px] font-semibold text-[#E2136E]">
-              bKash
-            </div>
-            <div className="rounded-md border border-[var(--border-strong)] bg-[var(--surface-2)] py-2 text-[10px] font-semibold text-[#F26522]">
-              Nagad
-            </div>
-            <div className="rounded-md border border-[var(--border-strong)] bg-[var(--surface-2)] py-2 text-[10px] font-semibold text-foreground">
-              COD
+          <div className="mt-5 space-y-2">
+            <p className="text-center text-[10px] uppercase tracking-wider text-muted">
+              We accept
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <BkashMark size="sm" />
+              <NagadMark size="sm" />
+              <SslCommerzMark size="sm" />
+              <CodMark size="sm" />
             </div>
           </div>
         </div>

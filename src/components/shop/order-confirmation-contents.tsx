@@ -19,6 +19,12 @@ import {
   Wallet,
 } from "lucide-react";
 
+import {
+  BkashMark,
+  CodMark,
+  NagadMark,
+  SslCommerzMark,
+} from "@/components/icons/payment-marks";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useHydrated } from "@/lib/use-hydrated";
@@ -26,24 +32,25 @@ import { formatBDT } from "@/lib/format";
 import { useOrderStore } from "@/store/order";
 import type { Order, PaymentMethod } from "@/types";
 
-const paymentLabels: Record<PaymentMethod, { label: string; brandClass: string }> = {
-  bkash: {
-    label: "bKash",
-    brandClass: "text-[#E2136E] bg-[#E2136E]/10 border-[#E2136E]/40",
-  },
-  nagad: {
-    label: "Nagad",
-    brandClass: "text-[#F26522] bg-[#F26522]/10 border-[#F26522]/40",
-  },
-  sslcommerz: {
-    label: "SSLCommerz",
-    brandClass: "text-[#1E40AF] bg-[#1E40AF]/15 border-[#1E40AF]/40",
-  },
-  cod: {
-    label: "Cash on Delivery",
-    brandClass: "text-foreground bg-[var(--surface-2)] border-[var(--border-strong)]",
-  },
+const paymentLabels: Record<PaymentMethod, string> = {
+  bkash: "bKash",
+  nagad: "Nagad",
+  sslcommerz: "SSLCommerz",
+  cod: "Cash on Delivery",
 };
+
+function PaymentBrandMark({ payment }: { payment: PaymentMethod }) {
+  switch (payment) {
+    case "bkash":
+      return <BkashMark size="sm" />;
+    case "nagad":
+      return <NagadMark size="sm" />;
+    case "sslcommerz":
+      return <SslCommerzMark size="sm" />;
+    default:
+      return <CodMark size="sm" />;
+  }
+}
 
 export function OrderConfirmationContents() {
   const hydrated = useHydrated();
@@ -83,7 +90,7 @@ export function OrderConfirmationContents() {
 
 function ConfirmationCard({ order }: { order: Order }) {
   const [copied, setCopied] = React.useState(false);
-  const payment = paymentLabels[order.payment];
+  const paymentLabel = paymentLabels[order.payment];
   const created = new Date(order.createdAt);
 
   const copyOrderId = () => {
@@ -138,15 +145,14 @@ function ConfirmationCard({ order }: { order: Order }) {
               </span>
             </ReceiptField>
             <ReceiptField label="Payment">
-              <span
-                className={`inline-flex items-center gap-2 rounded-md border px-2 py-0.5 text-xs font-semibold uppercase tracking-wider ${payment.brandClass}`}
-              >
-                {payment.label}
+              <span className="inline-flex flex-wrap items-center gap-2">
+                <PaymentBrandMark payment={order.payment} />
+                <span className="inline-flex items-center gap-1 text-sm text-foreground">
+                  <Wallet className="size-3.5" />
+                  {formatBDT(order.total)}
+                </span>
               </span>
-              <span className="ml-2 inline-flex items-center gap-1 text-sm text-foreground">
-                <Wallet className="size-3.5" />
-                {formatBDT(order.total)}
-              </span>
+              <span className="sr-only">{paymentLabel}</span>
             </ReceiptField>
             <ReceiptField label="Fulfilment">
               {order.fulfilment === "pickup" ? (

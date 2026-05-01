@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight, ExternalLink, GraduationCap } from "lucide-react";
+import {
+  ArrowUpRight,
+  ExternalLink,
+  GraduationCap,
+} from "lucide-react";
 
 import { PageShell } from "@/components/shared/page-shell";
 import { Button } from "@/components/ui/button";
@@ -22,11 +26,15 @@ export default function CoursesPage() {
           <span className="text-gradient-brand">School &amp; Department</span>
         </>
       }
-      description="Each school card opens directly into the official UIU eLMS catalogue, so you always reach the canonical course list. Use the matching textbook shortcut to land on what's in stock."
+      description="Each card opens directly into the official UIU eLMS catalogue, so you always reach the canonical course list. Use the matching textbook shortcut to land on what's in stock."
     >
       <div className="mb-10 flex flex-wrap items-center gap-3">
         <Button asChild variant="outline" size="lg">
-          <Link href={ELMS_SPRING_2026} target="_blank" rel="noreferrer noopener">
+          <Link
+            href={ELMS_SPRING_2026}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
             Open UIU eLMS Spring 2026
             <ExternalLink className="size-4" />
           </Link>
@@ -62,7 +70,11 @@ export default function CoursesPage() {
               </div>
               <div className="flex shrink-0 gap-2">
                 <Button asChild variant="outline" size="md">
-                  <Link href={school.elmsUrl} target="_blank" rel="noreferrer noopener">
+                  <Link
+                    href={school.elmsUrl}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
                     eLMS
                     <ExternalLink className="size-3.5" />
                   </Link>
@@ -72,25 +84,23 @@ export default function CoursesPage() {
 
             <div className="mt-6 grid gap-3 md:grid-cols-3">
               {school.departments.map((dept) => (
-                <div
+                <Link
                   key={dept.code}
-                  className="rounded-xl border border-[var(--border)] bg-[#0d0d0d] p-4"
+                  href={dept.elmsUrl}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="group relative flex h-full flex-col rounded-xl border border-[var(--border)] bg-[#0d0d0d] p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--primary)]/50 hover:bg-[#101010] hover:shadow-[0_15px_40px_-20px_rgba(232,103,26,0.45)]"
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-xs font-semibold text-[var(--primary-soft)]">
                       {dept.code}
                     </span>
-                    <Link
-                      href={dept.elmsUrl}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-muted hover:text-foreground"
-                    >
+                    <span className="inline-flex items-center gap-1 rounded-md border border-[var(--border-strong)] bg-[var(--surface-2)] px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-muted transition-colors group-hover:border-[var(--primary)]/40 group-hover:text-[var(--primary-soft)]">
                       eLMS
                       <ExternalLink className="size-3" />
-                    </Link>
+                    </span>
                   </div>
-                  <p className="mt-1 text-sm font-medium text-foreground">
+                  <p className="mt-1 text-sm font-medium text-foreground transition-colors group-hover:text-[var(--primary-soft)]">
                     {dept.name}
                   </p>
                   <ul className="mt-3 space-y-1.5 border-t border-[var(--border)] pt-3">
@@ -107,11 +117,23 @@ export default function CoursesPage() {
                             {c.title}
                           </span>
                         </div>
-                        <span className="shrink-0 text-muted">{c.credits} cr</span>
+                        <span className="shrink-0 text-muted">
+                          {c.credits} cr
+                        </span>
                       </li>
                     ))}
                   </ul>
-                </div>
+
+                  <div className="mt-auto flex items-center justify-between border-t border-[var(--border)] pt-3 text-[11px] text-muted">
+                    <span>
+                      {dept.sampleCourses.length} sample courses
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-[var(--primary-soft)] transition-transform group-hover:translate-x-0.5">
+                      Open course list
+                      <ArrowUpRight className="size-3" />
+                    </span>
+                  </div>
+                </Link>
               ))}
             </div>
 

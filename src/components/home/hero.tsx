@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -21,31 +22,55 @@ const trustPills = [
   { icon: BookOpen, label: "BOPIS at UIU" },
 ];
 
-const heroBooks = [
+type HeroBook = {
+  id: string;
+  src: string;
+  alt: string;
+};
+
+const initialBooks: HeroBook[] = [
   {
+    id: "mankiw",
     src: "/books/Screenshot_6.png",
     alt: "Principles of Economics by Mankiw",
-    rotate: "-rotate-6",
-    translate: "-translate-x-4 -translate-y-2",
-    z: "z-10",
   },
   {
+    id: "griffiths",
     src: "/books/Screenshot_11.png",
     alt: "Introduction to Quantum Mechanics by Griffiths",
-    rotate: "rotate-2",
-    translate: "translate-x-12 translate-y-6",
-    z: "z-20",
   },
   {
+    id: "blyth",
     src: "/books/717C857QTmL.jpg",
     alt: "An Introduction to Quantitative Finance by Stephen Blyth",
-    rotate: "rotate-12",
-    translate: "translate-x-32 -translate-y-4",
-    z: "z-0",
   },
 ];
 
+const slots = [
+  { rotate: 2, x: 48, y: 24, zIndex: 30 },
+  { rotate: -6, x: -16, y: -8, zIndex: 20 },
+  { rotate: 12, x: 128, y: -16, zIndex: 10 },
+];
+
 export function Hero() {
+  const [order, setOrder] = React.useState<HeroBook[]>(initialBooks);
+
+  const handleBookClick = (slotIndex: number) => {
+    setOrder((prev) => {
+      const lastIndex = prev.length - 1;
+      if (slotIndex === 0) {
+        return [...prev.slice(1), prev[0]];
+      }
+      if (slotIndex === lastIndex) {
+        return [prev[lastIndex], ...prev.slice(0, lastIndex)];
+      }
+      const reordered = [...prev];
+      const [picked] = reordered.splice(slotIndex, 1);
+      reordered.unshift(picked);
+      return reordered;
+    });
+  };
+
   return (
     <section className="relative isolate overflow-hidden">
       <div className="absolute inset-0 bg-radial-glow" aria-hidden />
@@ -158,30 +183,51 @@ export function Hero() {
 
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="relative h-[420px] w-[300px] lg:h-[480px] lg:w-[340px]">
-              {heroBooks.map((book, i) => (
-                <motion.div
-                  key={book.src}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: 0.7,
-                    delay: 0.25 + i * 0.12,
-                    ease: "easeOut",
-                  }}
-                  className={`absolute inset-0 ${book.rotate} ${book.translate} ${book.z} transition-transform duration-500 hover:rotate-0 hover:translate-x-0 hover:translate-y-0`}
-                >
-                  <div className="relative h-full w-full overflow-hidden rounded-lg border border-[var(--border-strong)] bg-[var(--surface-2)] shadow-[0_30px_60px_-25px_rgba(0,0,0,0.7),0_15px_40px_-15px_rgba(232,103,26,0.35)]">
-                    <Image
-                      src={book.src}
-                      alt={book.alt}
-                      fill
-                      sizes="(max-width: 1024px) 300px, 340px"
-                      className="object-cover"
-                      priority
-                    />
-                  </div>
-                </motion.div>
-              ))}
+              {order.map((book, slotIndex) => {
+                const slot = slots[slotIndex];
+                return (
+                  <motion.button
+                    key={book.id}
+                    type="button"
+                    aria-label={`Bring ${book.alt} to the front`}
+                    onClick={() => handleBookClick(slotIndex)}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{
+                      opacity: 1,
+                      y: slot.y,
+                      x: slot.x,
+                      rotate: slot.rotate,
+                      zIndex: slot.zIndex,
+                    }}
+                    whileHover={{
+                      x: slot.x * 0.4,
+                      y: slot.y * 0.4,
+                      rotate: slot.rotate * 0.3,
+                      scale: 1.02,
+                    }}
+                    whileTap={{ scale: 0.97 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 220,
+                      damping: 26,
+                      mass: 0.8,
+                    }}
+                    className="absolute inset-0 cursor-pointer rounded-lg p-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+                    style={{ zIndex: slot.zIndex }}
+                  >
+                    <div className="relative h-full w-full overflow-hidden rounded-lg border border-[var(--border-strong)] bg-[var(--surface-2)] shadow-[0_30px_60px_-25px_rgba(0,0,0,0.7),0_15px_40px_-15px_rgba(232,103,26,0.35)]">
+                      <Image
+                        src={book.src}
+                        alt={book.alt}
+                        fill
+                        sizes="(max-width: 1024px) 300px, 340px"
+                        className="object-cover"
+                        priority
+                      />
+                    </div>
+                  </motion.button>
+                );
+              })}
             </div>
           </div>
 
@@ -189,7 +235,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.7 }}
-            className="absolute bottom-6 left-2 z-30 flex items-center gap-3 rounded-xl border border-[var(--border-strong)] bg-[var(--surface)]/85 p-3 backdrop-blur-md sm:left-6"
+            className="pointer-events-none absolute bottom-6 left-2 z-40 flex items-center gap-3 rounded-xl border border-[var(--border-strong)] bg-[var(--surface)]/85 p-3 backdrop-blur-md sm:left-6"
           >
             <div className="flex size-9 items-center justify-center rounded-lg bg-[var(--success)]/15">
               <span className="size-2.5 rounded-full bg-[var(--success)]" />
@@ -208,7 +254,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.85 }}
-            className="absolute right-2 top-8 z-30 flex items-center gap-3 rounded-xl border border-[var(--border-strong)] bg-[var(--surface)]/85 p-3 backdrop-blur-md sm:right-6"
+            className="pointer-events-none absolute right-2 top-8 z-40 flex items-center gap-3 rounded-xl border border-[var(--border-strong)] bg-[var(--surface)]/85 p-3 backdrop-blur-md sm:right-6"
           >
             <div className="flex size-9 items-center justify-center rounded-lg bg-[var(--primary)]/15">
               <Wallet className="size-4 text-[var(--primary)]" />

@@ -5,19 +5,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  Banknote,
   Building2,
   CheckCircle2,
-  CreditCard,
   IdCard,
   Loader2,
   Lock,
   ShieldCheck,
   ShoppingBag,
-  Smartphone,
   Truck,
 } from "lucide-react";
 
+import {
+  BkashMark,
+  CodMark,
+  NagadMark,
+  SslCommerzMark,
+} from "@/components/icons/payment-marks";
+import { PaymentSuccessOverlay } from "@/components/shop/payment-success-overlay";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -66,41 +70,31 @@ const paymentOptions: Array<{
   id: PaymentMethod;
   label: string;
   sub: string;
-  brand: string;
-  brandClass: string;
-  icon: typeof Smartphone;
+  Mark: typeof BkashMark;
 }> = [
   {
     id: "bkash",
     label: "bKash",
     sub: "MFS · Send to 01XXXXXXXXX",
-    brand: "bKash",
-    brandClass: "text-[#E2136E] bg-[#E2136E]/10 border-[#E2136E]/40",
-    icon: Smartphone,
+    Mark: BkashMark,
   },
   {
     id: "nagad",
     label: "Nagad",
     sub: "MFS · Send to 01XXXXXXXXX",
-    brand: "Nagad",
-    brandClass: "text-[#F26522] bg-[#F26522]/10 border-[#F26522]/40",
-    icon: Smartphone,
+    Mark: NagadMark,
   },
   {
     id: "sslcommerz",
     label: "SSLCommerz",
     sub: "Cards, banks, MFS — all in one gateway",
-    brand: "SSL",
-    brandClass: "text-[#1E40AF] bg-[#1E40AF]/15 border-[#1E40AF]/40",
-    icon: CreditCard,
+    Mark: SslCommerzMark,
   },
   {
     id: "cod",
     label: "Cash on Delivery",
     sub: "Pay in cash at pickup or to the rider",
-    brand: "COD",
-    brandClass: "text-foreground bg-[var(--surface-2)] border-[var(--border-strong)]",
-    icon: Banknote,
+    Mark: CodMark,
   },
 ];
 
@@ -120,6 +114,10 @@ export function CheckoutForm() {
   const [deliveryAddress, setDeliveryAddress] = React.useState("");
   const [payment, setPayment] = React.useState<PaymentMethod>("bkash");
   const [processing, setProcessing] = React.useState(false);
+  const [overlayStage, setOverlayStage] = React.useState<
+    "processing" | "success" | "redirecting"
+  >("processing");
+  const [confirmedOrderId, setConfirmedOrderId] = React.useState<string | undefined>();
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
   const lineItems = React.useMemo(
@@ -191,6 +189,7 @@ export function CheckoutForm() {
     if (!validate()) {
       return;
     }
+    setOverlayStage("processing");
     setProcessing(true);
 
     await new Promise((resolve) => setTimeout(resolve, 1800));
@@ -205,8 +204,10 @@ export function CheckoutForm() {
       quantity: l.quantity,
     }));
 
+    const orderId = generateOrderId();
+
     const order: Order = {
-      id: generateOrderId(),
+      id: orderId,
       studentId: studentId.trim(),
       customerName: customerName.trim(),
       fulfilment,
@@ -226,11 +227,24 @@ export function CheckoutForm() {
     };
 
     setLastOrder(order);
+    setConfirmedOrderId(orderId);
+    setOverlayStage("success");
+
+    void sendOrderNotification(order, email.trim());
+
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    setOverlayStage("redirecting");
+    router.prefetch("/order-confirmation");
+
+    await new Promise((resolve) => setTimeout(resolve, 900));
+
     clearCart();
     router.push("/order-confirmation");
   };
 
   return (
+    <>
     <form onSubmit={handlePlaceOrder} className="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-start">
       <div className="space-y-8">
         <Section
@@ -397,28 +411,15 @@ export function CheckoutForm() {
                     className="sr-only"
                     disabled={processing}
                   />
-                  <span
-                    className={cn(
-                      "inline-flex h-9 min-w-[64px] items-center justify-center rounded-md border px-2 text-xs font-bold uppercase tracking-wider",
-                      opt.brandClass
-                    )}
-                  >
-                    {opt.brand}
-                  </span>
+                  <opt.Mark size="md" />
                   <div className="flex-1">
                     <p className="text-sm font-semibold text-foreground">
                       {opt.label}
                     </p>
                     <p className="text-xs text-muted">{opt.sub}</p>
                   </div>
-                  <opt.icon
-                    className={cn(
-                      "size-4 transition-colors",
-                      selected ? "text-[var(--primary)]" : "text-muted"
-                    )}
-                  />
                   {selected && (
-                    <CheckCircle2 className="size-4 text-[var(--primary)]" />
+                    <CheckCircle2 className="size-5 text-[var(--primary)]" />
                   )}
                 </label>
               );
@@ -513,6 +514,15 @@ export function CheckoutForm() {
         </div>
       </aside>
     </form>
+
+    <PaymentSuccessOverlay
+      open={processing}
+      stage={overlayStage}
+      payment={payment}
+      amount={total}
+      orderId={confirmedOrderId}
+    />
+    </>
   );
 }
 
@@ -592,4 +602,41 @@ function formatPickupTime() {
 function generateOrderId() {
   const random = Math.floor(10000 + Math.random() * 90000);
   return `UBN-2026-${random}`;
+}
+
+async function sendOrderNotification(order: Order, email: string) {
+  try {
+    const payload = {
+      orderId: order.id,
+      customerName: order.customerName,
+      studentId: order.studentId,
+      phone: order.phone,
+      email,
+      fulfilment: order.fulfilment,
+      deliveryAddress: order.deliveryAddress,
+      payment: order.payment,
+      items: order.items.map((i) => ({
+        title: i.title,
+        quantity: i.quantity,
+        priceBDT: i.priceBDT,
+        lineTotalBDT: i.priceBDT * i.quantity,
+      })),
+      subtotal: order.subtotal,
+      shipping: order.shipping,
+      total: order.total,
+      createdAt: order.createdAt,
+    };
+
+    const res = await fetch("/api/order-notification", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      console.warn("[checkout] order notification failed:", res.status);
+    }
+  } catch (err) {
+    console.warn("[checkout] order notification error:", err);
+  }
 }
