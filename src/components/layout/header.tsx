@@ -14,6 +14,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { useHydrated } from "@/lib/use-hydrated";
+import { useCartCount } from "@/store/cart";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -29,6 +31,8 @@ export function Header() {
   const [scrolled, setScrolled] = React.useState(false);
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [prevPathname, setPrevPathname] = React.useState(pathname);
+  const hydrated = useHydrated();
+  const cartCount = useCartCount();
 
   if (pathname !== prevPathname) {
     setPrevPathname(pathname);
@@ -142,8 +146,15 @@ export function Header() {
             <Link href="/cart" aria-label="View cart">
               <ShoppingBag className="size-4" />
               <span className="text-sm font-medium">Cart</span>
-              <span className="ml-1 rounded-full bg-[var(--primary)] px-1.5 py-px text-[10px] font-bold text-black">
-                0
+              <span
+                className={cn(
+                  "ml-1 inline-flex min-w-[1.25rem] items-center justify-center rounded-full px-1.5 py-px text-[10px] font-bold transition-colors",
+                  hydrated && cartCount > 0
+                    ? "bg-[var(--primary)] text-black"
+                    : "bg-[var(--surface-3)] text-muted"
+                )}
+              >
+                {hydrated ? cartCount : 0}
               </span>
             </Link>
           </Button>
@@ -152,11 +163,16 @@ export function Header() {
             variant="ghost"
             size="icon"
             asChild
-            className="md:hidden"
+            className="relative md:hidden"
             aria-label="Cart"
           >
             <Link href="/cart">
               <ShoppingBag className="size-5" />
+              {hydrated && cartCount > 0 && (
+                <span className="absolute -right-0.5 -top-0.5 inline-flex size-4 items-center justify-center rounded-full bg-[var(--primary)] text-[10px] font-bold text-black">
+                  {cartCount > 9 ? "9+" : cartCount}
+                </span>
+              )}
             </Link>
           </Button>
 

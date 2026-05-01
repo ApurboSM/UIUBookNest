@@ -3,15 +3,21 @@ import { cn } from "@/lib/utils";
 type StockBadgeProps = {
   inStock: boolean;
   count?: number;
+  showCount?: boolean;
   className?: string;
 };
 
-export function StockBadge({ inStock, count, className }: StockBadgeProps) {
+export function StockBadge({
+  inStock,
+  count,
+  showCount = false,
+  className,
+}: StockBadgeProps) {
   if (!inStock) {
     return (
       <span
         className={cn(
-          "inline-flex items-center gap-1.5 rounded-full border border-[var(--danger)]/40 bg-[var(--danger)]/10 px-2.5 py-0.5 text-xs font-medium text-[var(--danger)]",
+          "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[var(--danger)]/40 bg-[var(--danger)]/10 px-2.5 py-0.5 text-xs font-medium text-[var(--danger)]",
           className
         )}
       >
@@ -24,7 +30,7 @@ export function StockBadge({ inStock, count, className }: StockBadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border border-[var(--success)]/40 bg-[var(--success)]/10 px-2.5 py-0.5 text-xs font-medium text-[var(--success)]",
+        "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[var(--success)]/40 bg-[var(--success)]/10 px-2.5 py-0.5 text-xs font-medium text-[var(--success)]",
         className
       )}
     >
@@ -33,8 +39,8 @@ export function StockBadge({ inStock, count, className }: StockBadgeProps) {
         <span className="relative inline-flex size-1.5 rounded-full bg-[var(--success)]" />
       </span>
       In Stock
-      {typeof count === "number" && count > 0 && count <= 10 && (
-        <span className="ml-1 text-[10px] text-muted">· only {count} left</span>
+      {showCount && typeof count === "number" && count > 0 && count <= 10 && (
+        <span className="ml-1 text-[10px] text-muted">· {count} left</span>
       )}
     </span>
   );

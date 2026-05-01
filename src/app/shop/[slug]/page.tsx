@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, BookOpen, Building2, Truck } from "lucide-react";
+import { ArrowLeft, Building2, Truck } from "lucide-react";
 
+import { AddToCartButton } from "@/components/shop/add-to-cart-button";
 import { ProductCard } from "@/components/shop/product-card";
 import { PriceTag } from "@/components/shared/price-tag";
 import { StockBadge } from "@/components/shared/stock-badge";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { products, productBySlug } from "@/data/products";
 import { categoryBySlug } from "@/data/categories";
 
@@ -107,7 +107,11 @@ export default async function ProductPage({
                 originalPrice={product.originalPriceBDT}
                 size="lg"
               />
-              <StockBadge inStock={product.inStock} count={product.stockCount} />
+              <StockBadge
+                inStock={product.inStock}
+                count={product.stockCount}
+                showCount
+              />
             </div>
 
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted">
@@ -130,14 +134,8 @@ export default async function ProductPage({
               </div>
             )}
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button size="xl" disabled={!product.inStock}>
-                <BookOpen className="size-4" />
-                {product.inStock ? "Add to Cart" : "Notify when Restocked"}
-              </Button>
-              <Button size="xl" variant="outline" asChild>
-                <Link href="/cart">Go to Cart</Link>
-              </Button>
+            <div className="mt-8">
+              <AddToCartButton product={product} />
             </div>
 
             <div className="mt-10 grid gap-3 sm:grid-cols-2">
