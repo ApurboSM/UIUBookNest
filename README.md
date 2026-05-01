@@ -5,8 +5,6 @@ The smart campus bookstore for **United International University (UIU)** — cur
 > Academic capstone — **MGT 3225 E-Business · Spring 2026 · Group 07 Section B**
 > Md Abidur Rahman · Tahmeed Imam · Jihan Mahamud · Muhammad Maruf Khan
 
-![UIUBookNest hero](./public/logo.png)
-
 ---
 
 ## Stack
@@ -47,87 +45,84 @@ pnpm lint         # ESLint
 ## Project structure
 
 ```
-uiu-booknest/
+UIUBookNest/                          (repo root)
 ├─ public/
-│  ├─ logo.png                  # UIU BookNest owl logo
-│  └─ books/                    # 17 real textbook covers + placeholders
+│  ├─ logo.png                        # UIUBookNest owl logo
+│  └─ books/                          # 17 real textbook covers + placeholders
 ├─ src/
 │  ├─ app/
-│  │  ├─ layout.tsx             # root layout, fonts, AnnouncementBar/Header/Footer
-│  │  ├─ page.tsx               # landing
-│  │  ├─ globals.css            # theme tokens (dark + orange)
-│  │  ├─ shop/page.tsx
-│  │  ├─ shop/[slug]/page.tsx   # dynamic product detail (28 SSG'd routes)
-│  │  ├─ courses/page.tsx       # 4 schools, deep-linked to UIU eLMS
+│  │  ├─ layout.tsx                   # root layout, fonts, AnnouncementBar/Header/Footer
+│  │  ├─ page.tsx                     # landing
+│  │  ├─ globals.css                  # theme tokens (dark + orange)
+│  │  ├─ shop/page.tsx                # full grouped catalogue
+│  │  ├─ shop/[slug]/page.tsx         # dynamic product detail (28 SSG'd routes)
+│  │  ├─ courses/page.tsx             # 4 schools, deep-linked to UIU eLMS
 │  │  ├─ cart/page.tsx
-│  │  ├─ checkout/page.tsx
-│  │  ├─ order-confirmation/page.tsx
-│  │  ├─ return-policy/page.tsx # full content
-│  │  ├─ privacy-notice/page.tsx# full content
+│  │  ├─ checkout/page.tsx            # Student ID + BOPIS + bKash/Nagad/COD
+│  │  ├─ order-confirmation/page.tsx  # mock confirmation receipt
+│  │  ├─ return-policy/page.tsx
+│  │  ├─ privacy-notice/page.tsx
 │  │  ├─ about/page.tsx
 │  │  ├─ contact/page.tsx
 │  │  └─ not-found.tsx
 │  ├─ components/
-│  │  ├─ layout/                # Header, Footer, AnnouncementBar
-│  │  ├─ home/                  # Hero, CategoryGrid, FeaturedBooks, BopisBanner, CoursesPreview, HowItWorks, TrustBadges, Newsletter
+│  │  ├─ layout/                      # Header, Footer, AnnouncementBar
+│  │  ├─ home/                        # Hero, CategoryGrid, FeaturedBooks, BopisBanner, CoursesPreview, HowItWorks, TrustBadges, Newsletter
 │  │  ├─ shop/product-card.tsx
-│  │  ├─ shared/                # Logo, PageShell, SectionHeading, PriceTag, StockBadge
-│  │  └─ ui/                    # Button, Badge, Card, Input, Sheet, Separator
+│  │  ├─ contact/contact-form.tsx
+│  │  ├─ shared/                      # Logo, PageShell, SectionHeading, PriceTag, StockBadge
+│  │  └─ ui/                          # Button, Badge, Card, Input, Sheet, Separator
 │  ├─ data/
-│  │  ├─ categories.ts          # 4 category definitions
-│  │  ├─ products.ts            # 28 SKUs (17 textbooks + 4 stationery + 3 exam + 4 merch)
-│  │  └─ courses.ts             # 4 schools × departments × sample courses → UIU eLMS deep links
+│  │  ├─ categories.ts                # 4 category definitions
+│  │  ├─ products.ts                  # 28 SKUs across 4 categories
+│  │  └─ courses.ts                   # 4 schools × departments × sample courses → UIU eLMS deep links
 │  ├─ lib/
-│  │  ├─ utils.ts               # cn()
-│  │  └─ format.ts              # formatBDT() — Bangladeshi taka formatting
+│  │  ├─ utils.ts                     # cn()
+│  │  └─ format.ts                    # formatBDT() — Bangladeshi taka formatting
 │  └─ types/index.ts
+├─ books/                             # source book-cover assets (kept for reference)
+├─ logo.png                           # source logo (kept for reference)
+├─ BookNest_Website_Checklist.docx    # MGT 3225 brief
 ├─ next.config.ts
 ├─ tsconfig.json
-└─ package.json
+├─ package.json
+└─ pnpm-lock.yaml
 ```
 
 ## MGT 3225 Checklist — Phase Coverage
 
 | Phase | Status | Notes |
 |---|---|---|
-| **Phase 1 — Setup** | ✅ Done | Next.js project, BDT formatter, brand color `#E8671A`, Playfair + Inter, hero above the fold |
-| **Phase 2 — Catalogue** | 🟠 In progress | 28 products across 4 categories already seeded in `data/products.ts`. Featured grid live on landing. Full shop filtering ships next iteration |
-| **Phase 3 — Checkout** | ⏭ Up next | Skeleton route present with the full plan inline. Cart store, Student ID field, BOPIS toggle, and bKash/Nagad/COD flow ship next |
-| **Phase 4 — Trust Block + Footer** | ✅ Done | DBID placeholder, DCOG-2021 line, return policy, privacy notice, UIU contact all live in footer + dedicated pages |
-| **Phase 5 — Final Checks** | 🕒 Later | Will run the incognito purchase journey once Phase 3 ships |
+| **Phase 1 — Setup** | Done | Next.js project, BDT formatter, brand color `#E8671A`, Playfair + Inter, hero above the fold |
+| **Phase 2 — Catalogue** | In progress | 28 products across 4 categories live in `/shop` with grouped sections; product detail SSG'd for every SKU. Header search + advanced filters land next |
+| **Phase 3 — Checkout** | Up next | `/checkout` page describes the full flow today; functional cart + Student ID validation + BOPIS toggle + bKash/Nagad/COD wires up next |
+| **Phase 4 — Trust Block + Footer** | Done | DBID placeholder, DCOG-2021 line, return policy, privacy notice, UIU contact all live in footer + dedicated pages |
+| **Phase 5 — Final Checks** | Later | Will run the incognito purchase journey once Phase 3 ships |
 
 ### Bangladesh-specific context (live on homepage)
 
-- ✅ **bKash** mention in hero subhead, BOPIS banner, and floating callout
-- ✅ **Nagad** mention in hero subhead and BOPIS banner
-- ✅ **Pathao / RedX** delivery option in announcement bar, hero, and BOPIS banner
-- ✅ **BDT (৳)** currency symbol on every price (via `formatBDT`)
-- ✅ **UIU branding** in logo, hero, courses preview, and footer address
-- ✅ **DBID + DCOG-2021 + Consumer Rights Protection Act 2009** in footer + trust badges + privacy notice
+- **bKash** mention in hero subhead, BOPIS banner, and floating callout
+- **Nagad** mention in hero subhead and BOPIS banner
+- **Pathao / RedX** delivery option in announcement bar, hero, and BOPIS banner
+- **BDT (৳)** currency symbol on every price (via `formatBDT`)
+- **UIU branding** in logo, hero, courses preview, and footer address
+- **DBID + DCOG-2021 + Consumer Rights Protection Act 2009** in footer + trust badges + privacy notice
 
 ## Routes summary (41 total)
 
 ```
 /                          landing
-/shop                      catalogue (skeleton + 4 preview cards)
-/shop/[slug]               product detail (28 prerendered)
+/shop                      grouped catalogue (4 sections, 28 SKUs)
+/shop/[slug]               product detail with related items (28 prerendered)
 /courses                   browse by school → UIU eLMS deep links
-/cart                      cart skeleton
-/checkout                  checkout skeleton
-/order-confirmation        confirmation skeleton (with mock order)
+/cart                      cart with empty-state + reassurances + suggestions
+/checkout                  Student ID + fulfilment + payment flow overview
+/order-confirmation        confirmation with mock receipt and next steps
 /about                     about + team
-/contact                   contact channels + form preview
+/contact                   contact channels + form
 /return-policy             7-day return policy (full)
 /privacy-notice            CRPA 2009 / DCOG-2021 (full)
 ```
-
-## Deferred to next iteration
-
-- Functional cart with Zustand + localStorage
-- Shop catalogue with category filter, search results, and stock-aware empty states
-- Full checkout with Student ID validation, BOPIS toggle, and payment selector
-- Real order generation + email-style confirmation
-- About / Contact form wiring
 
 ## Credits
 

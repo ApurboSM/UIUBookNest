@@ -49,9 +49,6 @@ export const metadata: Metadata = {
     title: "UIUBookNest",
     description: "The smart campus bookstore for UIU students.",
   },
-  icons: {
-    icon: "/logo.png",
-  },
 };
 
 export default function RootLayout({
