@@ -19,7 +19,7 @@ export default function NotFound() {
           <span className="text-gradient-brand">out of stock</span>
         </h1>
         <p className="mt-5 max-w-lg text-base text-muted">
-          The page you're looking for has either moved or never existed. Try the
+          The page you&rsquo;re looking for has either moved or never existed. Try the
           shop, or jump back to the homepage to keep browsing.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">

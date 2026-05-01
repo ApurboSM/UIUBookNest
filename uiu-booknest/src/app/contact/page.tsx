@@ -47,7 +47,7 @@ export default function ContactPage() {
       eyebrow="Contact"
       title={
         <>
-          We're on campus —{" "}
+          We&rsquo;re on campus &mdash;{" "}
           <span className="text-gradient-brand">come say hi</span>
         </>
       }
@@ -90,7 +90,7 @@ export default function ContactPage() {
             Send us a message
           </h2>
           <p className="mt-2 text-sm text-muted">
-            Form submission isn't wired in this iteration — but the layout
+            Form submission isn&rsquo;t wired in this iteration &mdash; but the layout
             below is the exact one that goes live in Phase 4.
           </p>
           <ContactForm />

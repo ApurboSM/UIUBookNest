@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Building2, IdCard, Truck, Wallet } from "lucide-react";
 
 import { PageShell, ComingSoonPanel } from "@/components/shared/page-shell";
-import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Checkout — Student ID, BOPIS & bKash",

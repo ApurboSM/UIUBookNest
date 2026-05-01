@@ -10,9 +10,9 @@ type LogoProps = {
 };
 
 const sizeMap = {
-  sm: { px: 28, text: "text-lg" },
-  md: { px: 36, text: "text-xl" },
-  lg: { px: 56, text: "text-3xl" },
+  sm: { boxClass: "size-7", text: "text-lg" },
+  md: { boxClass: "size-9", text: "text-xl" },
+  lg: { boxClass: "size-14", text: "text-3xl" },
 };
 
 export function Logo({
@@ -24,14 +24,19 @@ export function Logo({
   const s = sizeMap[size];
   const content = (
     <span className={cn("inline-flex items-center gap-2.5 group", className)}>
-      <span className="relative shrink-0 inline-flex items-center justify-center rounded-lg bg-black ring-1 ring-[var(--border-strong)] p-1 transition-shadow group-hover:ring-[var(--primary)]/60">
+      <span
+        className={cn(
+          "relative shrink-0 inline-flex items-center justify-center overflow-hidden rounded-lg bg-black ring-1 ring-[var(--border-strong)] transition-shadow group-hover:ring-[var(--primary)]/60",
+          s.boxClass
+        )}
+      >
         <Image
           src="/logo.png"
           alt="UIUBookNest"
-          width={s.px}
-          height={s.px}
+          fill
+          sizes="56px"
           priority
-          className="object-contain"
+          className="object-cover scale-[1.6]"
         />
       </span>
       {showWordmark && (
