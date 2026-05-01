@@ -37,11 +37,11 @@ export function TrustBadges() {
             Trust &amp; Compliance
           </div>
           <h2 className="mt-4 font-serif text-3xl leading-tight tracking-tight text-balance md:text-4xl">
-            Built on Bangladesh's{" "}
+            Built on Bangladesh&rsquo;s{" "}
             <span className="text-gradient-brand">e-commerce trust framework</span>
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted md:text-base">
-            UIUBookNest answers Bangladesh's online-trust deficit head-on, with
+            UIUBookNest answers Bangladesh&rsquo;s online-trust deficit head-on, with
             visible regulatory anchors and a clear return path on every order.
           </p>
         </div>
