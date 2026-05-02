@@ -174,8 +174,8 @@ export function CheckoutForm() {
   const validate = () => {
     const next: Record<string, string> = {};
     if (!customerName.trim()) next.customerName = "Please enter your full name.";
-    if (!/^01\d{8,9}$/.test(studentId.replace(/\s/g, "")))
-      next.studentId = "Enter a valid 10-digit UIU Student ID (starts with 01).";
+    if (!/^11\d{6,8}$/.test(studentId.replace(/\s/g, "")))
+      next.studentId = "Enter a valid UIU Student ID starting with 11 (8–10 digits).";
     if (!/^01\d{9}$/.test(phone.replace(/\s/g, "")))
       next.phone = "Enter a valid Bangladeshi mobile number (11 digits).";
     if (fulfilment === "delivery" && deliveryAddress.trim().length < 10)
@@ -274,7 +274,7 @@ export function CheckoutForm() {
               <Input
                 value={studentId}
                 onChange={(e) => setStudentId(e.target.value)}
-                placeholder="0112230XXX"
+                placeholder="11222XXXXX"
                 inputMode="numeric"
                 disabled={processing}
               />

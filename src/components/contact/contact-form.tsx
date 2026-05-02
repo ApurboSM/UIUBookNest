@@ -141,7 +141,7 @@ export function ContactForm() {
           <Input
             value={studentId}
             onChange={(e) => setStudentId(e.target.value)}
-            placeholder="011XXXXXXX"
+            placeholder="11222XXXXX"
             disabled={state === "submitting"}
           />
         </Field>
