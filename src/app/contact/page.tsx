@@ -21,9 +21,9 @@ const channels = [
   {
     icon: Phone,
     title: "Phone & WhatsApp",
-    body: "+880 1700-000000",
+    body: "+880 1602-054450",
     cta: "Tap to call",
-    href: "tel:+8801700000000",
+    href: "tel:+880 1602-054450",
   },
   {
     icon: Mail,

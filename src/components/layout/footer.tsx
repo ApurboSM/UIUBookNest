@@ -165,7 +165,7 @@ export function Footer() {
                   href="tel:+8801700000000"
                   className="transition-colors hover:text-foreground"
                 >
-                  +880 1700-000000
+                  +880 1602-054450
                 </a>
               </div>
               <div className="flex items-center gap-3">
