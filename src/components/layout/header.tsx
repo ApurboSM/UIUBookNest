@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Menu, Search, ShoppingBag, X } from "lucide-react";
 
 import { Logo } from "@/components/shared/logo";
@@ -27,10 +27,15 @@ const navItems = [
 
 export function Header() {
   const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const initialQuery = searchParams.get("q") ?? "";
   const [searchOpen, setSearchOpen] = React.useState(false);
+  const [searchQuery, setSearchQuery] = React.useState(initialQuery);
   const [scrolled, setScrolled] = React.useState(false);
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [prevPathname, setPrevPathname] = React.useState(pathname);
+  const [prevQuery, setPrevQuery] = React.useState(initialQuery);
   const hydrated = useHydrated();
   const cartCount = useCartCount();
 
@@ -39,6 +44,21 @@ export function Header() {
     setMenuOpen(false);
     setSearchOpen(false);
   }
+
+  if (initialQuery !== prevQuery) {
+    setPrevQuery(initialQuery);
+    setSearchQuery(initialQuery);
+  }
+
+  const submitSearch = (raw: string) => {
+    const q = raw.trim();
+    if (!q) {
+      router.push("/shop");
+    } else {
+      router.push(`/shop?q=${encodeURIComponent(q)}`);
+    }
+    setSearchOpen(false);
+  };
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -90,25 +110,44 @@ export function Header() {
             {searchOpen ? (
               <form
                 role="search"
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  submitSearch(searchQuery);
+                }}
                 className="flex items-center gap-1"
               >
                 <div className="relative">
                   <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted" />
                   <Input
                     autoFocus
+                    name="q"
+                    type="search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search textbooks, authors, course codes…"
                     className="h-9 w-[280px] pl-9 lg:w-[360px]"
                     onKeyDown={(e) => {
-                      if (e.key === "Escape") setSearchOpen(false);
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        submitSearch(searchQuery);
+                      } else if (e.key === "Escape") {
+                        setSearchOpen(false);
+                        setSearchQuery(initialQuery);
+                      }
                     }}
                   />
                 </div>
+                <button type="submit" className="sr-only" aria-hidden tabIndex={-1}>
+                  Search
+                </button>
                 <Button
                   variant="ghost"
                   size="icon-sm"
                   type="button"
-                  onClick={() => setSearchOpen(false)}
+                  onClick={() => {
+                    setSearchOpen(false);
+                    setSearchQuery(initialQuery);
+                  }}
                   aria-label="Close search"
                 >
                   <X className="size-4" />
