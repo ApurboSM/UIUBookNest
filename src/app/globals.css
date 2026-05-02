@@ -44,7 +44,13 @@
 
   --color-success: var(--success);
   --color-danger: var(--danger);
+}
 
+/* Fonts in a non-inline @theme so Tailwind emits var() references in
+   utilities instead of resolving the value at build time. This prevents
+   Turbopack from injecting inline style attributes during SSR that are
+   absent on the client, causing hydration mismatches. */
+@theme {
   --font-sans: var(--font-inter);
   --font-serif: var(--font-playfair);
 }
@@ -84,10 +90,6 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--border-strong);
-}
-
-@utility font-serif {
-  font-family: var(--font-playfair), Georgia, "Times New Roman", serif;
 }
 
 @utility container-page {
