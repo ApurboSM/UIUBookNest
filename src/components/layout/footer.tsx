@@ -212,11 +212,21 @@ export function Footer() {
             </span>
           </div>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-            <span>© 2026 UIUBookNest</span>
+            <span>© 2026 UIUBookNest. All rights reserved.</span>
             <span aria-hidden>·</span>
-            <span>MGT 3225 E-Business · Spring 2026</span>
+            <Link
+              href="/privacy-notice"
+              className="transition-colors hover:text-foreground"
+            >
+              Privacy Notice
+            </Link>
             <span aria-hidden>·</span>
-            <span>Group 07 Section B</span>
+            <Link
+              href="/return-policy"
+              className="transition-colors hover:text-foreground"
+            >
+              Return Policy
+            </Link>
           </div>
         </div>
       </div>

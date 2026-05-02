@@ -129,3 +129,9 @@ UIUBookNest/                          (repo root)
 - Real textbook covers: Mankiw, Kotler, Griffin, Weygandt, Lynch, Lind, Kelly, Eastwood, Van Schendel, Griffiths, Levin, Mohri, Blyth, Carmona, Godbey, Tewari, Lial.
 - UIU eLMS deep links pulled from <https://elms.uiu.ac.bd/>.
 - Inspired by, and respectful of, UIU's official brand at <https://www.uiu.ac.bd/>.
+
+## License
+
+**All Rights Reserved.**
+
+Copyright © 2026 UIUBookNest. This project and all its source code, design, and assets are proprietary. No part may be reproduced, distributed, or used without explicit written permission from the copyright holder. See the [LICENSE](./LICENSE) file for full terms.
