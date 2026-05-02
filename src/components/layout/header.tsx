@@ -25,7 +25,27 @@ const navItems = [
   { href: "/contact", label: "Contact" },
 ];
 
+// Exported as a thin wrapper that defers the useSearchParams consumer inside Suspense
 export function Header() {
+  return (
+    <React.Suspense fallback={<HeaderShell />}>
+      <HeaderInner />
+    </React.Suspense>
+  );
+}
+
+// Fallback shell rendered during SSR / Suspense – no useSearchParams
+function HeaderShell() {
+  return (
+    <header className="sticky top-0 z-40 w-full border-b border-transparent bg-background transition-all duration-300">
+      <div className="container-page flex h-16 items-center gap-4 md:h-18">
+        <Logo />
+      </div>
+    </header>
+  );
+}
+
+function HeaderInner() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
