@@ -21,8 +21,8 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL("https://uiubooknest.bd"),
   title: {
-    default: "UIUBookNest — The Smart Campus Bookstore for UIU Students",
-    template: "%s · UIUBookNest",
+    default: "UIUBookNest | The Smart Campus Bookstore for UIU Students",
+    template: "%s | UIUBookNest",
   },
   description:
     "Curated textbooks, stationery, and exam supplies for United International University students. Pickup at the UIU Campus Store or delivery via Pathao & RedX. Pay with bKash, Nagad, or Cash on Delivery.",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "MGT 3225 Group 07 Section B" }],
   openGraph: {
-    title: "UIUBookNest — The Smart Campus Bookstore for UIU Students",
+    title: "UIUBookNest | The Smart Campus Bookstore for UIU Students",
     description:
       "Textbooks, stationery, and exam supplies — pickup at UIU Campus or delivery across Dhaka.",
     type: "website",

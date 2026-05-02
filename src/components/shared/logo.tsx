@@ -24,16 +24,14 @@ export function Logo({
   const s = sizeMap[size];
   const content = (
     <span className={cn("inline-flex items-center gap-2.5 group", className)}>
-      <span
-        className="relative shrink-0 inline-flex items-center justify-center rounded-lg bg-black ring-1 ring-[var(--border-strong)] px-1 py-0.5 transition-shadow group-hover:ring-[var(--primary)]/60"
-      >
+      <span className="relative shrink-0 inline-flex items-center justify-center">
         <Image
-          src="/logo.png"
+          src="/assets/logo.png"
           alt="UIUBookNest"
           width={s.w}
           height={s.h}
           priority
-          className="h-auto w-auto object-contain"
+          className="h-auto w-auto object-contain drop-shadow-[0_0_6px_rgba(232,103,26,0.35)] transition-[filter] group-hover:drop-shadow-[0_0_10px_rgba(232,103,26,0.6)]"
           style={{ maxHeight: s.h, maxWidth: s.w }}
         />
       </span>
